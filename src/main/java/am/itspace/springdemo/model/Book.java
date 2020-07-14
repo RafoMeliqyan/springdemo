@@ -8,17 +8,19 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "book")
+public class Book {
 
     @Id
     @GeneratedValue
     private int id;
-    private String name;
-    private String surname;
-    private String profilePic;
+    private String title;
+    private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 }
