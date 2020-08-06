@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>User Page</title>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+<header th:insert="fragments/general.html :: header"> </header>
+<h3 th:text="${msg}" th:if="${msg != null}"></h3>
+
+<h3 th:text="#{user.add.user}">Add User:</h3>
+<form action="/user/add" method="post" enctype="multipart/form-data">
+    <input type="text" name="name" th:placeholder="#{user.placeHorder1}"> <br>
+    <input type="text" name="surname" th:placeholder="#{user.placeHorder2}"> <br>
+    <input type="text" name="username" th:placeholder="#{user.placeHorder3}"> <br>
+    <input type="password" name="password" th:placeholder="#{user.placeHorder4}"> <br>
+    <input type="password" name="confirmPassword" th:placeholder="#{user.placeHorder5}"> <br>
+    <select name="role">
+        <option value="USER">user</option>
+        <option value="ADMIN">admin</option>
+    </select> <br>
+    <input type="file" name="image"> <br>
+    <input type="submit" th:value="#{book.value}">
+</form>
+
+<h3 th:text="#{user.users}">Users:</h3>
+<table id="users" border="1">
+    <thead>
+    <tr>
+        <td th:text="#{user.picture}"></td>
+        <td th:text="#{user.user.name}"></td>
+        <td th:text="#{user.user.surname}"></td>
+        <td th:text="#{user.username}"></td>
+        <td th:text="#{user.role}"></td>
+        <td th:text="#{user.active}"></td>
+        <td th:text="#{user.action}"></td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user: ${users}">
+        <td>
+            <img th:src="@{/image(name=${user.profilePic})}" width="20"
+                 th:if="${user.profilePic != null && user.profilePic.length() != 0}"/> </td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.surname}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.role.name()}"></td>
+        <td th:text="${user.active}"></td>
+        <td><a th:href="@{/user/delete(id=${user.id})}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

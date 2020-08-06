@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<a href="/">Main Page</a> <br>
-About us: <br>
-Contact: 1844542874 <br>
-email: asdsadwa@mail.com <br>
+<header th:insert="fragments/general.html :: header"> </header>
+<p th:text="#{about.about.us}"></p> <br>
+<p th:text="#{about.contact}"></p> 1844542874 <br>
+<p th:text="#{about.email}"></p> asdsadwa@mail.com<br>
 </body>
 </html>

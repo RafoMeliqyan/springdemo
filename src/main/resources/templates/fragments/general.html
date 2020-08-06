@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="header">
+    <a href="?lang=hy">ARM</a>
+    <a href="?lang=en">ENG</a>
+    <a href="?lang=ru">RU</a>
+    <br>
+    <a th:text="#{home.main.page}" href="/"></a>
+    <br>
+    <a href="/logout" th:text="#{home.logout}" th:if="${username != null}"></a>
+    <a href="/loginPage" th:text="#{home.login}" th:if="${username == null}"></a>
+    <h3 th:text="Welcome + ' ' + ${username}" th:if="${username != null}"></h3> <br>
+</div>
+</body>
+</html>

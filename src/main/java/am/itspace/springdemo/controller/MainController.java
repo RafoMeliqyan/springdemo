@@ -1,22 +1,18 @@
 package am.itspace.springdemo.controller;
 
-import am.itspace.springdemo.model.Book;
-import am.itspace.springdemo.model.User;
-import am.itspace.springdemo.repository.BookRepository;
-import am.itspace.springdemo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,35 +20,29 @@ public class MainController {
 
     @Value("${file.upload.dir}")
     private String uploadDir;
-    private final UserRepository userRepository;
-    private final BookRepository bookRepository;
 
     @GetMapping("/")
-    public String homePage(Model map, @RequestParam(name = "msg", required = false) String msg) {
-        List<User> users = userRepository.findAll();
-        List<Book> books = bookRepository.findAll();
-        map.addAttribute("users", users);
-        map.addAttribute("books", books);
-        map.addAttribute("msg", msg);
+    public String homePage() {
         return "home";
     }
 
-    @PostMapping("/addUser")
-    public String addUser(@ModelAttribute User user, @RequestParam("image") MultipartFile file) throws IOException {
-        String name = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        File image = new File(uploadDir, name);
-        file.transferTo(image);
-        user.setProfilePic(name);
-        userRepository.save(user);
-        return "redirect:/?msg=User was added";
+    @GetMapping("/loginPage")
+    public String loginPage() {
+        return "loginPage";
     }
 
-    @GetMapping("/deleteUser")
-    public String deleteUser(@RequestParam("id") int id) {
-        userRepository.deleteById(id);
-        String msg = "User was removed";
-        return "redirect:/?msg=" + msg;
-    }
+//    @GetMapping("/successLogin")
+//    public String successLogin(@AuthenticationPrincipal CurrentUser currentUser) {
+//        if (currentUser == null) {
+//            return "redirect:/";
+//        }
+//        User user = currentUser.getUser();
+//        if (user.getRole() == Role.ADMIN) {
+//            return "redirect:/admin";
+//        } else {
+//            return "redirect:/user";
+//        }
+//    }
 
     @GetMapping("/about")
     public String aboutUsPage() {
@@ -63,7 +53,8 @@ public class MainController {
             value = "/image",
             produces = MediaType.IMAGE_JPEG_VALUE
     )
-    public @ResponseBody byte[] getImage(@RequestParam("name") String imageName) throws IOException {
+    public @ResponseBody
+    byte[] getImage(@RequestParam("name") String imageName) throws IOException {
         InputStream in = new FileInputStream(uploadDir + File.separator + imageName);
         return IOUtils.toByteArray(in);
     }
